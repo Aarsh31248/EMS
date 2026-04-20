@@ -73,7 +73,7 @@ const LoginForm = ({ role, title, subtitle }) => {
                 <button
                   onClick={() => setShowPassword(!showPassword)}
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                 >
                   {showPassword ? (
                     <EyeOffIcon size={18} />
@@ -87,7 +87,7 @@ const LoginForm = ({ role, title, subtitle }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-linear-to-r from-indigo-600 to-indigo-500 text-white rounded-md text-sm font-semibold hover:from-indigo-700 hover:to-indigo-600 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-indigo-500/25 active:scale-[0.98] flex items-center justify-center"
+              className="w-full py-3 bg-linear-to-r from-indigo-600 to-indigo-500 text-white rounded-md text-sm font-semibold hover:from-indigo-700 hover:to-indigo-600 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-indigo-500/25 active:scale-[0.98] flex items-center justify-center cursor-pointer"
             >
               {loading && <Loader2Icon className="animate-spin h-4 w-4 mr-2"/>}
               Sign in
