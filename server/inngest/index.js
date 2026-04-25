@@ -63,11 +63,49 @@ const autoCheckOut = inngest.createFunction(
   },
 );
 
+// Send Email to admin, If admin does not take action on leave application within 24 hours
+const leaveApplicationReminder = inngest.createFunction(
+  { id: "leave-application-reminder", triggers: [{ event: "leave/pending" }] },
 
+  async ({ event, step }) => {
+    const { leaveApplicationId } = event.data;
+
+    // Wait for 24 hours
+    await step.sleepUntil(
+      "wait-for-the-24-hours",
+      new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+    );
+
+    const leaveApplication =
+      await LeaveApplication.findById(leaveApplicationId);
+
+    if (leaveApplication?.status === "PENDING") {
+      const employee = await Employee.findById(leaveApplication.employeeId);
+
+      // Send reminder email to admin to take action on leave application
+      await sendEmail({
+        to: process.env.ADMIN_EMAIL,
+        subject: `Leave Application Reminder`,
+        body: `
+            <div style="max-width: 600px;">
+                <h2>Hi Admin, 👋</h2>
+                <p style="font-size: 16px;">You have a leave application in ${employee.department} today:</p>
+                <p style="font-size: 18px; font-weight: bold; color: #007bff; margin: 8px 0;">${leaveApplication?.startDate?.toLocaleDateString()}</p>
+                <p style="font-size: 16px;">Please make sure to take action on this leave application.</p>
+                <br />
+                <p style="font-size: 16px;">Best Regards,</p>
+                <p style="font-size: 16px;">EMS</p>
+            </div>
+        `,
+      });
+    }
+  },
+);
 
 
 
 // Create an empty array where we'll export future Inngest functions
 export const functions = [
   autoCheckOut,
+  leaveApplicationReminder,
 ];
