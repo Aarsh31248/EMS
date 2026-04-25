@@ -88,7 +88,7 @@ export const getAttendance = async (req, res) => {
     }
 
     const limit = parseInt(req.query.limit || 30);
-    const history = (await Attendance.find({ employeeId: employee._id }))
+    const history = await Attendance.find({ employeeId: employee._id })
       .sort({ date: -1 })
       .limit(limit);
 
